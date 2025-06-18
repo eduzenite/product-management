@@ -2,7 +2,9 @@ version: '3.8'
 
 services:
   app:
-    image: php:8.2-fpm
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: amar-assist-app
     working_dir: /var/www
     volumes:
@@ -43,8 +45,8 @@ services:
       MYSQL_PASSWORD: assist
     volumes:
       - ./mysql-data:/var/lib/mysql
-#    networks:
-#      - amar-network
+    networks:
+      - amar-network
     command: --default-authentication-plugin=mysql_native_password
 
 volumes:
