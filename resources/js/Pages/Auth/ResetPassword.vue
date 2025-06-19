@@ -26,61 +26,43 @@ const submit = () => {
 </script>
 
 <template>
-    <GuestLayout>
-        <Head title="Reset Password" />
+    <Head title="Redefinir Senha" />
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-header text-center">
+                        <h4><i class="fas fa-key"></i> Redefinir senha</h4>
+                    </div>
+                    <div class="card-body">
+                        <form @submit.prevent="submit">
+                            <input type="hidden" :value="token" name="token" />
 
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="email" value="Email" />
+                            <div class="mb-3">
+                                <label for="email" class="form-label">E-mail</label>
+                                <input id="email" type="email" v-model="form.email" required autofocus class="form-control" />
+                                <div v-if="form.errors.email" class="text-danger small mt-1">{{ form.errors.email }}</div>
+                            </div>
 
-                <TextInput
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autofocus
-                    autocomplete="username"
-                />
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Nova senha</label>
+                                <input id="password" type="password" v-model="form.password" required autocomplete="new-password" class="form-control" />
+                                <div v-if="form.errors.password" class="text-danger small mt-1">{{ form.errors.password }}</div>
+                            </div>
 
-                <InputError class="mt-2" :message="form.errors.email" />
+                            <div class="mb-3">
+                                <label for="password_confirmation" class="form-label">Confirmar nova senha</label>
+                                <input id="password_confirmation" type="password" v-model="form.password_confirmation" required autocomplete="new-password" class="form-control" />
+                                <div v-if="form.errors.password_confirmation" class="text-danger small mt-1">{{ form.errors.password_confirmation }}</div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100" :disabled="form.processing">
+                                Redefinir senha
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
-
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
-
-                <TextInput
-                    id="password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password"
-                    required
-                    autocomplete="new-password"
-                />
-
-                <InputError class="mt-2" :message="form.errors.password" />
-            </div>
-
-            <div class="mt-4">
-                <InputLabel for="password_confirmation" value="Confirm Password" />
-
-                <TextInput
-                    id="password_confirmation"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password_confirmation"
-                    required
-                    autocomplete="new-password"
-                />
-
-                <InputError class="mt-2" :message="form.errors.password_confirmation" />
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Reset Password
-                </PrimaryButton>
-            </div>
-        </form>
-    </GuestLayout>
+        </div>
+    </div>
 </template>

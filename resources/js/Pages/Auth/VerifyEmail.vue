@@ -18,32 +18,31 @@ const verificationLinkSent = computed(() => props.status === 'verification-link-
 </script>
 
 <template>
-    <GuestLayout>
-        <Head title="Email Verification" />
+    <Head title="Verificar E-mail" />
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 text-center">
+                <div class="card shadow-sm p-4">
+                    <h3><i class="fas fa-envelope-open-text"></i> Verifique seu e-mail</h3>
+                    <p class="mb-4 text-muted">Antes de continuar, por favor verifique seu e-mail para um link de verificação.</p>
 
-        <div class="mb-4 text-sm text-gray-600">
-            Thanks for signing up! Before getting started, could you verify your email address by clicking on the link
-            we just emailed to you? If you didn't receive the email, we will gladly send you another.
-        </div>
+                    <div v-if="status === 'verification-link-sent'" class="alert alert-success" role="alert">
+                        Um novo link de verificação foi enviado para seu e-mail.
+                    </div>
 
-        <div class="mb-4 font-medium text-sm text-green-600" v-if="verificationLinkSent">
-            A new verification link has been sent to the email address you provided during registration.
-        </div>
+                    <form @submit.prevent="sendVerification" class="d-inline">
+                        <button type="submit" class="btn btn-primary me-3" :disabled="processing">
+                            Reenviar link de verificação
+                        </button>
+                    </form>
 
-        <form @submit.prevent="submit">
-            <div class="mt-4 flex items-center justify-between">
-                <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Resend Verification Email
-                </PrimaryButton>
-
-                <Link
-                    :href="route('logout')"
-                    method="post"
-                    as="button"
-                    class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >Log Out</Link
-                >
+                    <form @submit.prevent="logout" class="d-inline">
+                        <button type="submit" class="btn btn-outline-secondary">
+                            Sair
+                        </button>
+                    </form>
+                </div>
             </div>
-        </form>
-    </GuestLayout>
+        </div>
+    </div>
 </template>
