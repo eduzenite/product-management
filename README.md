@@ -70,10 +70,11 @@ git clone https://github.com/eduzenite/product-management
 cd product-management
 ```
 
-2. Copie o arquivo de ambiente e configure:
+2. Copie o arquivo de ambiente e configure e a pasta do banco de dados:
 
 ```bash
 cp .env.example .env
+mkdir mysql-data
 ```
 
 3. Suba os containers:
@@ -104,9 +105,9 @@ npm run dev
 php artisan tinker
 
 >>> \App\Models\User::factory()->create([
-...     'email' => 'admin@example.com',
-...     'password' => bcrypt('password'),
-... ]);
+     'email' => 'admin@example.com',
+     'password' => bcrypt('password'),
+ ]);
 ```
 
 ---
