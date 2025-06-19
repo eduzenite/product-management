@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,5 +23,12 @@ class ProductFactory extends Factory
             'cost_price' => $this->faker->randomFloat(2, 100, 1000),
             'description' => $this->faker->paragraph(3),
         ];
+    }
+
+    public function configure()
+    {
+        return $this->afterCreating(function (Product $product) {
+            // opcional: pode usar se não quiser usar has()
+        });
     }
 }

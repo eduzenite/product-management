@@ -1,66 +1,138 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Sistema de Cadastro de Produtos
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Este projeto é um sistema completo de cadastro e gerenciamento de produtos, com autenticação, múltiplas imagens, validações específicas e execução via Docker.
 
-## About Laravel
+---
+## Funcionalidades
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- Autenticação com login de usuário padrão
+- Tela de listagem de produtos com opções:
+  - Cadastrar
+  - Editar
+  - Inativar (soft delete)
+- Cadastro de produtos com os seguintes campos:
+  - **Título**
+  - **Imagens** (múltiplas, JPG ou PNG)
+  - **Preço de venda**
+  - **Custo**
+  - **Descrição do produto** (campo com HTML limitado)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Validações
 
-## Learning Laravel
+- O **preço de venda** deve ser pelo menos **10% superior ao custo** do produto.
+- A **descrição** aceita apenas as seguintes tags HTML: `<p>`, `<br>`, `<b>`, `<strong>`.
+- Somente imagens nos formatos **JPG** e **PNG** são aceitas, com limite de 2MB por imagem.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Arquitetura e Tecnologias
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+| Camada        | Tecnologia          |
+|---------------|---------------------|
+| Backend       | Laravel 9 (PHP 8.2) |
+| Banco de Dados| MySQL 8             |
+| Frontend      | Vue 3 + Inertia.js  |
+| Ambiente      | Docker              |
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+## Testes
 
-### Premium Partners
+- Testes unitários para `Product` e `ProductImage`
+- Cobertura de:
+  - Criação de produtos
+  - Validação de regras de negócio
+  - Relacionamento entre produtos e imagens
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+### Executar os testes
 
-## Contributing
+```bash
+php artisan test
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+## Instalação
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Pré-requisitos
 
-## Security Vulnerabilities
+- Docker
+- Docker Compose
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Passo a passo
 
-## License
+1. Clone o repositório:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+git clone https://github.com/eduzenite/product-management
+cd product-management
+```
+
+2. Copie o arquivo de ambiente e configure:
+
+```bash
+cp .env.example .env
+```
+
+3. Suba os containers:
+
+```bash
+docker-compose up -d
+```
+
+4. Acesse o container do app e instale as dependências:
+
+```bash
+docker exec -it amar-assist-app bash
+composer install
+php artisan migrate
+php artisan storage:link
+```
+
+5. Instale as dependências do frontend:
+
+```bash
+npm install
+npm run dev
+```
+
+6. Crie um usuário de teste:
+
+```bash
+php artisan tinker
+
+>>> \App\Models\User::factory()->create([
+...     'email' => 'admin@example.com',
+...     'password' => bcrypt('password'),
+... ]);
+```
+
+---
+
+7. Dados fakes
+
+Para facilitar os testes e visualização do sistema, é possível gerar produtos fictícios com o comando:
+```bash
+php artisan db:seed --class=FakerSeeder
+```
+
+Por segurança, esse seeder só insere dados quando o ambiente estiver configurado como local.
+
+---
+
+## Segurança
+
+- CSRF Token nos formulários
+- Validações robustas no backend
+- Limpeza de HTML permitida apenas para tags seguras
+
+---
+
+## Manual do Usuário
+
+1. Acesse `http://localhost:8080`
+2. Crie uma conta
+3. Faça login
+4. Visualize, edite ou cadastre novos produtos via painel

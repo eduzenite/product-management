@@ -21,6 +21,6 @@ class FakerSeeder extends Seeder
         }
 
         Product::factory()->count(24)->create();
-        ProductImage::factory()->count(40)->create();
+//        ProductImage::factory()->count(40)->create();
     }
 }
